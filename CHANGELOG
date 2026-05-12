@@ -1,3 +1,10 @@
+2.0 (03.04/2026)
+- Compatibility to Qgis 4 & Qt6
+- Push algorithm to processing
+- Ui launch processing algs
+1.0 (18.11.2020)
+- Fix unkown projection when new layer is created
+- Multipart lines supported
 0.9 (09.11.2020)
 - Move plugin to his self toolbar
 

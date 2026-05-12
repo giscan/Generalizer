@@ -1,6 +1,9 @@
 from __future__ import absolute_import
 from builtins import range
-from PyQt5.QtGui import *
+try:
+    from qgis.PyQt.QtGui import *
+except ImportError:
+    from PyQt5.QtGui import *
 from .points import *
 import math
 

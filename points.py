@@ -1,5 +1,10 @@
 from builtins import object
-from PyQt5.QtGui import *
+   
+try:
+    from qgis.PyQt.QtGui import *
+except ImportError:
+    from PyQt5.QtGui import *
+
 from math import sqrt, acos, pi, fabs
 
 class line_pnts(object):
@@ -132,9 +137,14 @@ def Vect_new_line_struct(l):
     res = line_pnts()
 
     for i in l:
-        res.x.append(i[0])
-        res.y.append(i[1])
-    res.n_points = len(l)
+        # QGIS 4: asPolyline() retourne des QgsPointXY — accepter les deux formats
+        if hasattr(i, 'x') and callable(i.x):
+            res.x.append(i.x())
+            res.y.append(i.y())
+        else:
+            res.x.append(i[0])
+            res.y.append(i[1])
+    res.n_points = len(res.x)
 
     return res
 

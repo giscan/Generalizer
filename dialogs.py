@@ -1,7 +1,6 @@
-from builtins import str
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-from  PyQt5.QtWidgets import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 
 from os.path import splitext, dirname
 
@@ -29,5 +28,5 @@ def openDir(parent):
     key = '/UI/lastShapefileDir'
     outDir = settings.value(key)
 
-    outPath = QFileDialog.getExistingDirectory(parent, 'Generalizer', outDir)#, QFileDialog.ShowDirsOnly | QFileDialog.DontResolveSymlinks)
+    outPath = QFileDialog.getExistingDirectory(parent, 'Generalizer', outDir)
     return outPath

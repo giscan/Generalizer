@@ -1,7 +1,10 @@
 from __future__ import print_function
 from __future__ import absolute_import
 from builtins import range
-from qgis.PyQt.QtWidgets import *
+try:
+    from qgis.PyQt.QtWidgets import *
+except ImportError:
+    from PyQt5.QtWidgets import *
 from .points import *
 from .matrix import *
 
@@ -169,6 +172,10 @@ def distance_weighting(points, slide, look_ahead):
 
 
 def chaiken(points, level, weight):
+    from qgis.core import QgsMessageLog, Qgis
+    QgsMessageLog.logMessage(f"chaiken weight: {weight} ({type(weight)})", 
+                         "Generalizer3", 
+                         level=Qgis.Info)
     n = 0
     i = 0
     j = 0
@@ -184,6 +191,7 @@ def chaiken(points, level, weight):
 
     if n < 3: return n
 
+    weight = float(weight)
     d1 = 1./(1+weight)
     d2 = float(weight)/(1+weight)
 
