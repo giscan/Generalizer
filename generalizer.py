@@ -2,8 +2,7 @@
 /***************************************************************************
  generalizer
                                  A QGIS plugin
- Lines generalization (smooth and simplify) based on v.generalize GRASS module
-                              -------------------
+Lines generalization and smoothing (inpired from v.generalize GRASS module)                              -------------------
         begin                : 2011-08-17
         copyright            : (C) 2011 by Piotr Pociask
         email                : ppociask (at) o2 pl
@@ -20,20 +19,20 @@
  *                                                                         *
  ***************************************************************************/
 """
-from __future__ import absolute_import
+
+
 # Import the PyQt and QGIS libraries
 from builtins import object
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-
-from PyQt5.QtWidgets import QAction, QMessageBox
-
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import QAction, QMessageBox
 
 from qgis.core import *
 # Initialize Qt resources from file resources.py
 from .resources import *
 # Import the code for the dialog
 from .generalizerdialog import generalizerDialog, getLayersNames
+from .generalizer_provider import GeneralizerProvider
 import os.path
 
 
@@ -59,8 +58,8 @@ class generalizer:
 
         self.pluginIsActive = False
         self.dockwidget = None
-
         self.output_layer = None
+        self.provider = None
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -154,7 +153,7 @@ class generalizer:
 
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
-
+        from qgis.core import QgsApplication
         icon_path = ':/plugins/Generalizer3/icon.png'
         self.add_action(
             icon_path,
@@ -162,19 +161,21 @@ class generalizer:
             callback=self.run,
             parent=self.iface.mainWindow())
 
+        self.provider = GeneralizerProvider()
+        QgsApplication.processingRegistry().addProvider(self.provider)
+
 
     def unload(self):
         """Removes the plugin menu item and icon from QGIS GUI."""
-
-        #print "** UNLOAD Generalizer"
-
+        from qgis.core import QgsApplication
         for action in self.actions:
             self.iface.removePluginVectorMenu(
                 self.tr(u'&Generalizer'),
                 action)
             self.iface.removeToolBarIcon(action)
-        # remove the toolbar
         del self.toolbar
+        if self.provider:
+            QgsApplication.processingRegistry().removeProvider(self.provider)
 
     # run method that performs all the real work
     def run(self):
@@ -187,7 +188,10 @@ class generalizer:
         dlg = generalizerDialog(self.iface)
         # show the dialog
         dlg.show()
-        result = dlg.exec_()
+        try:
+            result = dlg.exec()
+        except:
+            result = dlg.exec_()
         # See if OK was pressed
         if result == 1:
             # do something useful (delete the line containing pass and

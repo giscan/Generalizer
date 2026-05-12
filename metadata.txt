@@ -1,7 +1,8 @@
 [general]
 name=Generalizer3
 email=sylvain.poulain@giscan.com
-qgisMinimumVersion=3.0
+qgisMinimumVersion=4.0
+qgisMaximumVersion=4.99
 description=Lines generalization and smoothing (partially based on v.generalize GRASS module)
 about=Plugin to Generalize, Simplify or Smooth lines in QGIS
       Functions :
@@ -20,7 +21,7 @@ about=Plugin to Generalize, Simplify or Smooth lines in QGIS
                  Distance Weighting
                  McMaster's Sliding Averaging Algorithm
                  Snakes Algorithm : Slowest smoothing algorithm
-version=0.9
+version=2.0
 author=Piotr Pociask, Matthew Petroff, Sylvain POULAIN
 
 
@@ -41,6 +42,13 @@ experimental=False
 deprecated=False
 
 changelog=
+    2.0 (03.04/2026)
+        - Compatibility to Qgis 4 & Qt6
+        - Push algorithm to processing
+        - Ui launch processing algs
+    1.0 (18.11.2020)
+        - Fix unkown projection when new layer is created
+        - Multipart lines supported
     0.9 (09.11.2020)
         - Move plugin to his self toolbar
     0.8 (23.05.2020)

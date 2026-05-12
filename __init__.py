@@ -2,11 +2,12 @@
 /***************************************************************************
  generalizer
                                  A QGIS plugin
-"Lines generalization and smoothing (partially based on v.generalize GRASS module)"
+"Lines generalization and smoothing (inpired from v.generalize GRASS module)"
                              -------------------
         begin                : 2011-08-17
         copyright            : (C) 2011 by Piotr Pociask
-        email                : ppociask (at) o2 pl
+                               (C) 2019 - 2026 by Sylvain POULAIN
+        email                : sylvain dot poulain (at) giscan dot com
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,8 +20,13 @@
  ***************************************************************************/
  This script initializes the plugin, making it known to QGIS.
 """
-from __future__ import absolute_import
+
+
 def classFactory(iface):
-    # load generalizer class from file generalizer
+    """Load generalizer class from file generalizer.
+
+    :param iface: A QGIS interface instance.
+    :type iface: QgsInterface
+    """
     from .generalizer import generalizer
     return generalizer(iface)
